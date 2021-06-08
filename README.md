@@ -22,7 +22,7 @@ _mm_div_ps(_mm_set1_ps(1.0f), _mm_sqrt_ps(x)) took 85.942000ms
 _mm_rsqrt_ps(x) took 13.855000ms
 ```
 
-We can clearly see that `Q_rsqrt_sse` significantly faster than the scalar version, with the fastest being SSE's native inverse square root function. With the original `Q_rsqrt` surprisingly taking the longest (I'm not quite sure why this is so slow actually).
+We can clearly see that `Q_rsqrt_sse` significantly faster (about 3.5x, the theoretical maximum being 4x) than the scalar version, with the fastest being SSE's native inverse square root function.
 
 ## Using it
 
