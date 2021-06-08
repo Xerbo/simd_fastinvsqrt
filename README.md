@@ -12,17 +12,17 @@ Why not.
 
 ## Speed test
 
-Here is the results of running `benchmark.c` with `-O2` on my hardware (and manually averaging 3 runs):
+Here is the results of running `benchmark.c` compiled with `-O2` on my hardware:
 
 ```
-Q_rsqrt took(x) 99.410333ms
-1.0f/sqrtf(x) took 35.515666ms
-Q_rsqrt_sse(x) took 7.105333ms
-_mm_div_ps(_mm_set1_ps(1.0f), _mm_sqrt_ps(x)) took 10.934666ms
-_mm_rsqrt_ps(x) took 10.303000ms
+Q_rsqrt took(x) 897.832000ms
+1.0f/sqrtf(x) took 334.861000ms
+Q_rsqrt_sse(x) took 32.018000ms
+_mm_div_ps(_mm_set1_ps(1.0f), _mm_sqrt_ps(x)) took 88.548000ms
+_mm_rsqrt_ps(x) took 13.725000ms
 ```
 
-We can clearly see that `Q_rsqrt_sse` easily beats every other method (in this test at least), being followed by SSE's native inverse square root function. With the original `Q_rsqrt` surprisingly taking the longest.
+We can clearly see that `Q_rsqrt_sse` significantly faster than the scalar version, with the fastest being SSE's native inverse square root function. With the original `Q_rsqrt` surprisingly taking the longest (I'm not quite sure why this is so slow actually).
 
 ## Using it
 
