@@ -29,7 +29,7 @@ static inline float Q_rsqrt(float number) {
 
 	x2 = number * 0.5F;
 	y  = number;
-	i  = * ( long * ) &y;                       // evil floating point bit level hacking
+	i  = * ( int * ) &y;                       // evil floating point bit level hacking
 	i  = 0x5f3759df - ( i >> 1 );               // what the fuck? 
 	y  = * ( float * ) &i;
 	y  = y * ( threehalfs - ( x2 * y * y ) );   // 1st iteration
@@ -40,19 +40,19 @@ static inline float Q_rsqrt(float number) {
 #endif
 
 static inline __m128 Q_rsqrt_sse(__m128 number) {
-    __m128i i;
-    __m128 x2, y;
-    const __m128 threehalfs = _mm_set1_ps(1.5f);
+	__m128i i;
+	__m128 x2, y;
+	const __m128 threehalfs = _mm_set1_ps(1.5f);
 
-    x2 = _mm_mul_ps(number, _mm_set_ps1(0.5f));
-    y = number;
-    i = *(__m128i *)&y;                                                          // evil floating point bit level hacking
-    i = _mm_sub_epi32(_mm_set1_epi32(0x5f3759df), _mm_srli_epi32(i, 1));         // what the fuck?
-    y = *(__m128 *)&i;
-    y = _mm_mul_ps(y, _mm_sub_ps(threehalfs, _mm_mul_ps(x2, _mm_mul_ps(y, y)))); // 1st iteration
-//  y = _mm_mul_ps(y, _mm_sub_ps(threehalfs, _mm_mul_ps(x2, _mm_mul_ps(y, y)))); // 2nd iteration, this can be removed
+	x2 = _mm_mul_ps(number, _mm_set_ps1(0.5f));
+	y = number;
+	i = *(__m128i *)&y;                                                          // evil floating point bit level hacking
+	i = _mm_sub_epi32(_mm_set1_epi32(0x5f3759df), _mm_srli_epi32(i, 1));         // what the fuck?
+	y = *(__m128 *)&i;
+	y = _mm_mul_ps(y, _mm_sub_ps(threehalfs, _mm_mul_ps(x2, _mm_mul_ps(y, y)))); // 1st iteration
+//	y = _mm_mul_ps(y, _mm_sub_ps(threehalfs, _mm_mul_ps(x2, _mm_mul_ps(y, y)))); // 2nd iteration, this can be removed
 
-    return y;
+	return y;
 }
 
 #endif // SIMD_FASTINVSQRT_H
